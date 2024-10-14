@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Base Transaction History Viewer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Base Transaction History Viewer</h1>
+        <form method="post">
+            <input type="text" name="address" placeholder="Enter wallet address" required>
+            <input type="submit" value="View Transactions">
+        </form>
+        {% if transactions %}
+            <div class="result">
+                <h2>Transaction History:</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Txn Hash</th>
+                            <th>Block</th>
+                            <th>From</th>
+                            <th>To</th>
+                            <th>Value (ETH)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for txn in transactions %}
+                            <tr>
+                                <td><a href="https://base.blockchainexplorer.com/tx/{{ txn.hash }}" target="_blank">{{ txn.hash }}</a></td>
+                                <td>{{ txn.blockNumber }}</td>
+                                <td>{{ txn.from }}</td>
+                                <td>{{ txn.to }}</td>
+                                <td>{{ txn.value }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+        {% if error %}
+            <div class="result error">
+                <strong>Error:</strong> {{ error }}
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
